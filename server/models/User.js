@@ -2,6 +2,10 @@ const { Schema, model } = require("mongoose");
 const bcrypt = require("bcrypt");
 
 const { projectSchema } = require("./Project");
+const { yarnSchema } = require("./Yarn");
+const { needleSchema } = require("./Needles");
+const { patternSchema } = require("./Pattern");
+
 
 const userSchema = new Schema(
     {
@@ -23,7 +27,10 @@ const userSchema = new Schema(
           type: String,
           required: true,
         },
-        pets: [petSchema],
+        projects: [projectSchema],
+        yarn: [yarnSchema],
+        needles: [needleSchema],
+        pattern: [patternSchema]
       },
     
       {
@@ -46,10 +53,18 @@ const userSchema = new Schema(
       return bcrypt.compare(pass, this.password);
     };
     
-    userSchema.virtual("petCount").get(function () {
-      return this.pets.length;
+    userSchema.virtual("projects").get(function () {
+      return this.projects.length;
     });
-    
+    userSchema.virtual("yarn").get(function () {
+      return this.yarn.length
+    });
+    userSchema.virtual("needles").get(function () {
+      return this.needles.length
+    });
+    userSchema.virtual("pattern").get(function () {
+      return this.pattern.length
+    });
 
 const User = model("User", userSchema);
 
